@@ -1,8 +1,8 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, notification } from 'antd';
 
 
-const FormCom = () => {
+const FormCom = (props) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ const FormCom = () => {
             body: raw,
             redirect: 'follow'
         };
-       
+
 
         fetch("http://localhost:8086/api/auth/login", requestOptions)
             .then(response => {
@@ -38,10 +38,12 @@ const FormCom = () => {
                 localStorage.setItem("accessToken", result.authenticationToken)
                 localStorage.setItem("username", result.username)
             })
+            .then(props.callback)
             .catch(error => {
-
-                console.log('error', error)
-                alert("May nhap sai roi")
+                notification["error"]({
+                    message: "Tài khoản hoặc mật khẩu không đúng! :)",
+                    placement: "topRight",
+                });
             });
 
 
@@ -115,8 +117,11 @@ const FormCom = () => {
                 }}
             >
                 <Button type="primary" htmlType="submit">
-                    Submit
+                    Sign in
                 </Button>
+                <div style={{display: 'flex'}}>
+                    Not a member?  <a href="/register">{"  Signup"}</a>
+                </div>
             </Form.Item>
         </Form>
     )

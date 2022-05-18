@@ -10,7 +10,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 
-const HeaderCom = (props) => {
+const HeaderBlog = (props) => {
 
     return (
         <div>
@@ -40,4 +40,4 @@ const HeaderCom = (props) => {
     )
 }
 
-export default HeaderCom
+export default HeaderBlog
