@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { Layout, Menu, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Space } from 'antd';
-
+import { Layout, Menu, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Alert, Space } from 'antd';
+import Marquee from 'react-fast-marquee';
 import {
     PlusOutlined,
     MessageOutlined,
@@ -12,7 +12,6 @@ import { getAllPost } from '../../apis/postApi';
 import { Link } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
-import { likeByUser } from '../../apis/likeApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -25,7 +24,7 @@ const IconText = ({ icon, text }) => (
     </Space>
 );
 
-const ContentCom = (props) => {
+const ContentBlogType = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [posts, setPosts] = useState([])
     const [isRender, setIsRender] = useState(false);
@@ -43,15 +42,6 @@ const ContentCom = (props) => {
             .catch(err => console.log(err))
     }, [])
 
-    const handleLike = (id) => {
-        likeByUser(id)
-            .then(() => {
-                getAllPost()
-                    .then(res => setPosts(res.data.reverse()))
-                    .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
-    }
 
     const openNotification = () => {
         notification.open({
@@ -81,11 +71,13 @@ const ContentCom = (props) => {
             <Content style={{ margin: '0 16px' }}>
                 <div style={{ marginBottom: "20px" }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
+                        <Breadcrumb.Item>Thể loại</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Button onClick={showModal} type="primary" shape="round" icon={<PlusOutlined />} size={"small"}>
-                        Thêm bài viết
-                    </Button>
+                    <Alert message={
+                        <Marquee pauseOnHover gradient={false}>
+                            I can be a React component, multiple React components, or just some text.
+                        </Marquee>} type="success" />
+                
                     <ModalBlog setPosts={(data) => setPosts(data)} isModalVisible={isModalVisible} category={category} handleOk={handleOk} handleCancel={handleCancel} />
                 </div>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
@@ -106,9 +98,7 @@ const ContentCom = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <div style={{cursor:"pointer" }} onClick={() => handleLike(item.id)}>
-                                        <IconText   icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />
-                                    </div>,
+                                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
                                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                                 ]}
                                 extra={
@@ -139,4 +129,4 @@ const ContentCom = (props) => {
     )
 }
 
-export default ContentCom
+export default ContentBlogType

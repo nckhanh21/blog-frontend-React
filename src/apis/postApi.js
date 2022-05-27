@@ -6,6 +6,16 @@ export function getAllPost(data) {
   return axios.get("http://localhost:8086/api/posts/all");
 }
 
+export function getAllPostByUser() {
+  var url = "http://localhost:8086/api/posts/all/profile"
+  var config = {
+    headers: {
+      "Authorization": 'Bearer '+ localStorage.getItem("accessToken")
+    }
+  }
+  return axios.get(url,config);
+}
+
 
 export function createPost(data) {
   var url = "http://localhost:8086/api/posts/"
@@ -14,7 +24,7 @@ export function createPost(data) {
     "title": data.title,
     "description": data.description,
     "thumnail": data.image,
-    "category_id": 1
+    "category_id": data.type
   })
   var config = {
     headers: {
@@ -33,4 +43,14 @@ export function getPost(data) {
     }
   }
   return axios.get(url,config);
+}
+
+export function deletePost(data) {
+  var url = "http://localhost:8086/api/posts/delete/" + data
+  var config = {
+    headers: {
+      "Authorization": 'Bearer '+ localStorage.getItem("accessToken")
+    }
+  }
+  return axios.delete(url,config);
 }

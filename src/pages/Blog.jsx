@@ -23,7 +23,6 @@ const Blog = () => {
         getPost(id)
             .then((res) => {
                 setPost(res.data)
-                console.log("haha",res.data);
             })
     },[])
 
@@ -38,7 +37,7 @@ const Blog = () => {
                 <Navbar isLogin={isLogin} handleLogout={handleLogout} username={username} />
                 <Layout className="site-layout">
                     <HeaderBlog isLogin={isLogin} handleLogout={handleLogout} username={username} />
-                    <ContentBlog blog={post} isLogin={isLogin} handleLogout={handleLogout} username={username} />
+                    <ContentBlog setPost={(data) => setPost(data)} id={id} blog={post} isLogin={isLogin} handleLogout={handleLogout} username={username} />
                 </Layout>
             </Layout>
 

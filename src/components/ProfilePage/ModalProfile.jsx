@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Input, Select, Form, notification } from 'antd';
 import { Editor } from "@tinymce/tinymce-react";
 import {
@@ -9,18 +9,20 @@ import {
     UserOutlined,
     HomeOutlined,
 } from '@ant-design/icons';
-import { createPost, createPost1, getAllPost } from '../../apis/postApi';
-import { getAllCategory } from '../../apis/categoryApi';
+import { createPost, createPost1, getAllPost, getAllPostByUser } from '../../apis/postApi';
 
 const { TextArea } = Input;
 
-const ModalBlog = (props) => {
+const ModalProfile = (props) => {
     const [form] = Form.useForm();
     const [contentText, setContentText] = useState("")
+
     const handleChange = (content) => {
         setContentText(content)
     }
+
     const handleSubmit = (values) => {
+        console.log(contentText);
         values.content = contentText
         props.handleOk()
         createPost(values)
@@ -33,10 +35,12 @@ const ModalBlog = (props) => {
                     placement: "topRight",
                 });
             })
+
+
     }
 
     const displayData = () => {
-        getAllPost()
+        getAllPostByUser()
             .then(res => {
                 props.setPosts(res.data.reverse())
                 notification["success"]({
@@ -76,7 +80,7 @@ const ModalBlog = (props) => {
                         label=""
                         name="type">
                         <Select placeholder="Thể loại">
-                            {props.category.map((item)=>(
+                            {props.category.map((item) => (
                                 <Select.Option value={item.id}>{item.name}</Select.Option>
                             ))}
                         </Select>
@@ -104,11 +108,14 @@ const ModalBlog = (props) => {
                             style={{ width: 'calc(100% - 200px)', marginBottom: "10px" }}
                             defaultValue=""
                         />
+
                     </Form.Item>
+
+
                 </Form>
             </Modal>
         </div>
     )
 }
 
-export default ModalBlog
+export default ModalProfile

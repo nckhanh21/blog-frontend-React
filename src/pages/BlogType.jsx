@@ -3,6 +3,8 @@ import { Layout, Menu, Breadcrumb,Image,Avatar } from 'antd';
 import ContentCom from '../components/Homepage/ContentCom'
 import HeaderCom from '../components/HeaderCom'
 import Navbar from '../components/Navbar'
+import ContentBlogType from '../components/BlogTypePage/ContentBlogType';
+import HeaderBlogType from '../components/BlogTypePage/HeaderBlogType';
 
 
 const Homepage = () => {
@@ -19,8 +21,8 @@ const Homepage = () => {
         <Layout style={{ minHeight: '100vh' }}>
          <Navbar isLogin={isLogin} default={"1"}  handleLogout={handleLogout} username={username} />
          <Layout className="site-layout">
-            <HeaderCom isLogin={isLogin}  handleLogout={handleLogout} username={username}/>
-            <ContentCom isLogin={isLogin}  handleLogout={handleLogout} username={username} />
+            <HeaderBlogType isLogin={isLogin}  handleLogout={handleLogout} username={username}/>
+            <ContentBlogType isLogin={isLogin}  handleLogout={handleLogout} username={username} />
          </Layout>
          </Layout>
     </div>
