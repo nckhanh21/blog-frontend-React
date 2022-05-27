@@ -54,3 +54,17 @@ export function deletePost(data) {
   }
   return axios.delete(url,config);
 }
+
+export function getPostBySearch(searchContent) {
+  var url = "http://localhost:8086/api/posts/search"
+  var post = {
+    "content": searchContent
+  }
+  var config = {
+    headers: {
+      'Content-Type': 'application/json',
+      "Authorization": 'Bearer '+ localStorage.getItem("accessToken")
+    }
+  }
+  return axios.post(url,post,config);
+}

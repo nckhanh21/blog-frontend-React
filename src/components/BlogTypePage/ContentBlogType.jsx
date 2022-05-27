@@ -12,6 +12,7 @@ import { getAllPost } from '../../apis/postApi';
 import { Link } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
+import { likeByUser } from '../../apis/likeApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -42,6 +43,15 @@ const ContentBlogType = (props) => {
             .catch(err => console.log(err))
     }, [])
 
+    const handleLike = (id) => {
+        likeByUser(id)
+            .then(() => {
+                getAllPost()
+                    .then(res => setPosts(res.data.reverse()))
+                    .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+    }
 
     const openNotification = () => {
         notification.open({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Layout, Menu, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Space } from 'antd';
+import { Layout, Menu, Input, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Space } from 'antd';
 
 import {
     PlusOutlined,
@@ -8,7 +8,7 @@ import {
     LikeOutlined
 } from '@ant-design/icons';
 import ModalBlog from './ModalBlog';
-import { getAllPost } from '../../apis/postApi';
+import { getAllPost, getPostBySearch } from '../../apis/postApi';
 import { Link } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
@@ -16,7 +16,7 @@ import { likeByUser } from '../../apis/likeApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-
+const { Search } = Input;
 
 const IconText = ({ icon, text }) => (
     <Space>
@@ -52,6 +52,19 @@ const ContentCom = (props) => {
             })
             .catch(err => console.log(err))
     }
+    const onSearch = (value) => {
+        getPostBySearch(value)
+            .then(res => {
+                console.log(res.data);
+                setPosts(res.data.reverse())})
+            .catch(()=> {
+                notification["error"]({
+                    message: "Không tìm thấy bài viết phù hợp!",
+                    placement: "topRight",
+                })
+            })
+
+    }
 
     const openNotification = () => {
         notification.open({
@@ -83,10 +96,14 @@ const ContentCom = (props) => {
                     <Breadcrumb style={{ margin: '16px 0' }}>
                         <Breadcrumb.Item>Home</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Button onClick={showModal} type="primary" shape="round" icon={<PlusOutlined />} size={"small"}>
-                        Thêm bài viết
-                    </Button>
-                    <ModalBlog setPosts={(data) => setPosts(data)} isModalVisible={isModalVisible} category={category} handleOk={handleOk} handleCancel={handleCancel} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Button onClick={showModal} type="primary" shape="round" icon={<PlusOutlined />} size={"small"}>
+                            Thêm bài viết
+                        </Button>
+
+                        <ModalBlog setPosts={(data) => setPosts(data)} isModalVisible={isModalVisible} category={category} handleOk={handleOk} handleCancel={handleCancel} />
+                        <Search placeholder="Tìm kiếm bài viết..." allowClear onSearch={onSearch} style={{ width: 400 }} />
+                    </div>
                 </div>
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
 
@@ -106,8 +123,8 @@ const ContentCom = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <div style={{cursor:"pointer" }} onClick={() => handleLike(item.id)}>
-                                        <IconText   icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />
+                                    <div style={{ cursor: "pointer" }} onClick={() => handleLike(item.id)}>
+                                        <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />
                                     </div>,
                                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
                                 ]}
