@@ -10,7 +10,7 @@ import {
     UserOutlined,
     HomeOutlined,
 } from '@ant-design/icons';
-import { createPost, createPost1, getAllPost, getAllPostByUser } from '../../apis/postApi';
+import { createPost, createPost1, EditPost, getAllPost, getAllPostByUser, getPost } from '../../apis/postApi';
 
 const { TextArea } = Input;
 
@@ -39,26 +39,27 @@ const ModalEditPostProfile = (props) => {
         if (values.type == undefined) {
             values.type = props.blog.category_id
         } 
-
-        console.log(values);
         values.content = contentText
+        values.id = props.blog.id
+        values.numLike = props.blog.numLike
+        values.createdOn = props.blog.createdOn
         props.handleOk()
-        createPost(values)
+        EditPost(values)
             .then(() => {
                 displayData()
             })
             .catch(() => {
                 notification["error"]({
-                    message: "Lỗi khi đăng bài viết",
+                    message: "Lỗi khi sửa bài viết",
                     placement: "topRight",
                 });
             })
     }
     
     const displayData = () => {
-        getAllPostByUser()
+        getPost(props.blog.id)
             .then(res => {
-                //props.setPosts(res.data.reverse())
+                props.setPost(res.data)
                 notification["success"]({
                     message:
                         "Thêm bài viết thành công!",

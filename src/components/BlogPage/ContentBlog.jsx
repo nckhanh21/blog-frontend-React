@@ -114,7 +114,7 @@ const ContentBlog = (props) => {
                         </div>
                         <div>
                             {localStorage.getItem('username') == props.blog.username ? <Button onClick={() => showModalEdit()} >Chỉnh sửa</Button> : ""}
-                            <ModalEditPostProfile category={props.category} blog={props.blog} isModalVisible={isModalVisibleEdit} handleOk={handleOkEdit} handleCancel={handleCancelEdit} />
+                            <ModalEditPostProfile category={props.category} setPost={props.setPost} blog={props.blog} isModalVisible={isModalVisibleEdit} handleOk={handleOkEdit} handleCancel={handleCancelEdit} />
                         </div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
