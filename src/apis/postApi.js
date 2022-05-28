@@ -68,3 +68,13 @@ export function getPostBySearch(searchContent) {
   }
   return axios.post(url,post,config);
 }
+
+export function getPostByCategory(data) {
+  var url = "http://localhost:8086/api/posts/get/category/" + data
+  var config = {
+    headers: {
+      "Authorization": 'Bearer '+ localStorage.getItem("accessToken")
+    }
+  }
+  return axios.get(url,config);
+}

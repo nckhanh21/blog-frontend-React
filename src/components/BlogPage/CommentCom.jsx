@@ -18,7 +18,6 @@ const CommentCom = (props) => {
             content: values.content,
             postId: props.id
         }
-        console.log(data);
         createComment(data)
             .then(() => display())
             .catch(() => {

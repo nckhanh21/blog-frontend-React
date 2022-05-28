@@ -8,8 +8,8 @@ import {
     LikeOutlined
 } from '@ant-design/icons';
 import ModalBlog from './ModalBlog';
-import { getAllPost } from '../../apis/postApi';
-import { Link } from 'react-router-dom';
+import { getAllPost, getPostByCategory } from '../../apis/postApi';
+import { Link, useLocation } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
 import { likeByUser } from '../../apis/likeApi';
@@ -26,32 +26,24 @@ const IconText = ({ icon, text }) => (
 );
 
 const ContentBlogType = (props) => {
+    const location = useLocation()
+    let listpath = location.pathname.split('/')
+    const idCategory = listpath[listpath.length - 1]
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [posts, setPosts] = useState([])
-    const [isRender, setIsRender] = useState(false);
     const [category, setCategory] = useState([])
 
     useEffect(() => {
-        getAllPost()
+        getPostByCategory(idCategory)
             .then(res => setPosts(res.data.reverse()))
             .catch(err => console.log(err))
-    }, [isRender])
+    }, [])
 
     useEffect(() => {
         getAllCategory()
             .then(res => setCategory(res.data))
             .catch(err => console.log(err))
     }, [])
-
-    const handleLike = (id) => {
-        likeByUser(id)
-            .then(() => {
-                getAllPost()
-                    .then(res => setPosts(res.data.reverse()))
-                    .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
-    }
 
     const openNotification = () => {
         notification.open({
@@ -81,11 +73,11 @@ const ContentBlogType = (props) => {
             <Content style={{ margin: '0 16px' }}>
                 <div style={{ marginBottom: "20px" }}>
                     <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Thể loại</Breadcrumb.Item>
+                        <Breadcrumb.Item>Thể loại {(category.length > 0)? category[idCategory-1].name : ""} </Breadcrumb.Item>
                     </Breadcrumb>
                     <Alert message={
                         <Marquee pauseOnHover gradient={false}>
-                            I can be a React component, multiple React components, or just some text.
+                            Chúc các bạn có những phút giây vui vẻ trên Blog của chúng mình!!
                         </Marquee>} type="success" />
                 
                     <ModalBlog setPosts={(data) => setPosts(data)} isModalVisible={isModalVisible} category={category} handleOk={handleOk} handleCancel={handleCancel} />

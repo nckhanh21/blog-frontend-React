@@ -13,6 +13,7 @@ import Homepage from './pages/Homepage';
 import RegisterPage from './pages/RegisterPage';
 import Blog from './pages/Blog';
 import BlogType from './pages/BlogType';
+import Navbar from './components/Navbar';
 
 const App = () => {
   return (

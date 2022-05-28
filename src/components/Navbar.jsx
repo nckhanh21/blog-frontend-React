@@ -46,7 +46,7 @@ const Navbar = (props) => {
                      }
                     </Menu.Item>
                     <SubMenu key="sub1" icon={<TeamOutlined />} title="Thể loại">
-                        {category.map((item)=> (<Menu.Item key={"type"+ item.id}><Link to={"/type/"+ item.id}>{item.name}</Link></Menu.Item>))}
+                        {category.map((item)=> (<Menu.Item key={"type"+ item.id}><a href={"/type/"+ item.id}>{item.name}</a></Menu.Item>))}
                     </SubMenu>
                     {props.isLogin == true ?
 

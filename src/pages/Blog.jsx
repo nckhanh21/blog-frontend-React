@@ -8,6 +8,7 @@ import { getPost } from './../apis/postApi';
 import{ useLocation, } from "react-router-dom";
 import HeaderBlog from '../components/BlogPage/HeaderBlog';
 import ContentBlog from '../components/BlogPage/ContentBlog';
+import { getAllCategory } from '../apis/categoryApi';
 
 
 const Blog = () => {
@@ -18,6 +19,14 @@ const Blog = () => {
     const username = localStorage.getItem('username')
     const [isLogin, setIsLogin] = useState(username != null)
     const [post, setPost] = useState({})
+    const [category, setCategory] = useState([])
+
+    useEffect(() => {
+        getAllCategory()
+            .then(res => setCategory(res.data))
+            .catch(err => console.log(err))
+    }, [])
+
 
     useEffect(()=> {
         getPost(id)
@@ -37,7 +46,7 @@ const Blog = () => {
                 <Navbar isLogin={isLogin} handleLogout={handleLogout} username={username} />
                 <Layout className="site-layout">
                     <HeaderBlog isLogin={isLogin} handleLogout={handleLogout} username={username} />
-                    <ContentBlog setPost={(data) => setPost(data)} id={id} blog={post} isLogin={isLogin} handleLogout={handleLogout} username={username} />
+                    <ContentBlog category={category} setPost={(data) => setPost(data)} id={id} blog={post} isLogin={isLogin} handleLogout={handleLogout} username={username} />
                 </Layout>
             </Layout>
 

@@ -19,6 +19,7 @@ import Title from 'antd/lib/typography/Title';
 import Text from 'antd/lib/typography/Text';
 import ModalProfile from './ModalProfile';
 import { getAllCategory } from './../../apis/categoryApi';
+import ModalEditPostProfile from './ModalEditPostProfile';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -34,6 +35,7 @@ const IconText = ({ icon, text }) => (
 
 const ContentProfile = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
     const [posts, setPosts] = useState([])
     const [isRender, setIsRender] = useState(false);
     const [category, setCategory] = useState([])
@@ -68,10 +70,7 @@ const ContentProfile = (props) => {
                 message: "Xóa bài thành công",
                 placement: "topRight",
             }))
-            .catch(() => notification["error"]({
-                message: "Lỗi khi xóa bài",
-                placement: "topRight",
-            }))
+            .catch()
     }
     const handleEditPost = (id) => {
 
@@ -88,6 +87,18 @@ const ContentProfile = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+
+    const showModalEdit = () => {
+        props.isLogin == true ? setIsModalVisibleEdit(true) : openNotification()
+    };
+
+    const handleOkEdit = () => {
+        setIsModalVisibleEdit(false);
+    };
+
+    const handleCancelEdit = () => {
+        setIsModalVisibleEdit(false);
+    };
     return (
         <div>
 
@@ -100,6 +111,8 @@ const ContentProfile = (props) => {
                         Thêm bài viết
                     </Button>
                     <ModalProfile setPosts={(data) => setPosts(data)} category={category} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
+                            
+                        
                 </div>
                 <div className="site-layout-background" style={{ backgroundColor: "rgb(249, 255, 240)", padding: 24, minHeight: 360 }}>
                     <div style={{ display: 'flex', justifyContent: "space-around", textAlign: 'center' }}>
@@ -132,9 +145,10 @@ const ContentProfile = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
+                                    <IconText icon={LikeOutlined} text={item.numLike}key="list-vertical-like-o" />,
                                     <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
-                                    <Button onClick={() => handleDeletePost(item.id)}>Xóa</Button>
+                                    <Button onClick={() => handleDeletePost(item.id)}>Xóa</Button>,
+                                    
                                 ]}
                                 extra={
                                     <img
