@@ -100,8 +100,8 @@ const ContentBlogType = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                    <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />,
+                                    <IconText icon={MessageOutlined} text={item.numComment} key="list-vertical-message" />,
                                 ]}
                                 extra={
                                     <img

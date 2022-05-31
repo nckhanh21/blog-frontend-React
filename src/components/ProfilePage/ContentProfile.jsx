@@ -146,7 +146,7 @@ const ContentProfile = (props) => {
                                 key={item.title}
                                 actions={[
                                     <IconText icon={LikeOutlined} text={item.numLike}key="list-vertical-like-o" />,
-                                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                    <IconText icon={MessageOutlined} text={item.numComment} key="list-vertical-message" />,
                                     <Button onClick={() => handleDeletePost(item.id)}>Xóa</Button>,
                                     
                                 ]}

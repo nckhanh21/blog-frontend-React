@@ -126,7 +126,7 @@ const ContentCom = (props) => {
                                     <div style={{ cursor: "pointer" }} onClick={() => handleLike(item.id)}>
                                         <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />
                                     </div>,
-                                    <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                                    <IconText icon={MessageOutlined} text={item.numComment} key="list-vertical-message" />,
                                 ]}
                                 extra={
                                     <img
