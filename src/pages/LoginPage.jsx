@@ -13,15 +13,11 @@ const LoginPage = () => {
 
     return (
 
-        <div>
+        <div style={{ width: '100%', height: '500px', backgroundImage: 'url("https://dichvuquangcao.vn/wp-content/uploads/2021/04/yty.png' }}>
             <Tabs defaultActiveKey="1" centered>
                 <TabPane tab="Login" key="1">
-
                     {isLogin == false ?
-                        <div>
-                            <div>
-
-                            </div>
+                        <div style={{ marginTop: "10%", }}>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <div className="FormLogin">
                                     <FormCom callback={() => setIsLogin(true)} />
@@ -36,13 +32,10 @@ const LoginPage = () => {
                 </TabPane>
                 <TabPane tab="Register" key="2">
                     {isLogin == false ?
-                        <div>
-                            <div>
-
-                            </div>
+                        <div style={{ marginTop: "5%", }}>
                             <div style={{ display: "flex", justifyContent: "center" }}>
                                 <div className="FormLogin">
-                                    <FormRegister reload={reload}  setReload={(value) => setReload(value)} />
+                                    <FormRegister reload={reload} setReload={(value) => setReload(value)} />
                                 </div>
                             </div>
                         </div>

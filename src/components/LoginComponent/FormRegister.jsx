@@ -1,30 +1,83 @@
 import React, { useState, UseEffect, useLayoutEffect } from 'react';
-import { Form, Input, Button, Checkbox, notification } from 'antd';
-import { createAccount, getAllUsername } from '../../apis/authApi';
+import { Form, Input, Button, Modal, notification } from 'antd';
+import { createAccount, getAllUsername, vertifyAccount } from '../../apis/authApi';
 
 
 const FormRegister = (props) => {
 
     const [listUsername, setListUsername] = useState([])
+    const [vertifyText, setVertifyText] = useState("")
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        console.log(vertifyText);
+        vertifyAccount(vertifyText)
+            .then(() => notification["success"]({
+                message: "Đăng kí thành công",
+                placement: "topRight",
+            }))
+            .then(()=> setIsModalVisible(false))
+            .catch(()=> notification["error"]({
+                message: "Đăng kí thất bại do bạn nhập vertify code không chính xác",
+                placement: "topRight",
+            }))
+        
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+
+
     useLayoutEffect(() => {
         getAllUsername()
             .then(res => setListUsername(res.data))
             .catch(err => console.log(err))
     }, [])
 
+    // const onFinish = (values) => {
+    //     if (listUsername.indexOf(values.username) == -1) {
+    //         if (values.password == values.confirmPassword) {
+    //             console.log(values);
+    //             createAccount(values)
+    //                 .then(() => notification["success"]({
+    //                     message: "Đăng kí thành công",
+    //                     placement: "topRight",
+    //                 }))
+    //                 .then(() => {
+    //                     props.setReload(!props.reload)
+    //                     console.log("hihi");
+    //                 })
+    //                 .catch(() => notification["error"]({
+    //                     message: "Đăng kí thất bại",
+    //                     placement: "topRight",
+    //                 }))
+    //         }
+    //         else {
+    //             notification["error"]({
+    //                 message: "Đăng kí thất bại do mật khẩu không trùng khớp",
+    //                 placement: "topRight",
+    //             });
+    //         }
+    //     }
+    //     else{
+    //         notification["error"]({
+    //             message: "Tài khoản đã tồn tại",
+    //             placement: "topRight",
+    //         });
+    //     }
+    // };
     const onFinish = (values) => {
         if (listUsername.indexOf(values.username) == -1) {
             if (values.password == values.confirmPassword) {
-                console.log(values);
+                showModal()
                 createAccount(values)
-                    .then(() => notification["success"]({
-                        message: "Đăng kí thành công",
-                        placement: "topRight",
-                    }))
-                    .then(() => {
-                        props.setReload(!props.reload)
-                        console.log("hihi");
-                    })
+                    .then()
                     .catch(() => notification["error"]({
                         message: "Đăng kí thất bại",
                         placement: "topRight",
@@ -37,14 +90,13 @@ const FormRegister = (props) => {
                 });
             }
         }
-        else{
+        else {
             notification["error"]({
                 message: "Tài khoản đã tồn tại",
                 placement: "topRight",
             });
         }
     };
-
     const onFinishFailed = (errorInfo) => {
         notification["error"]({
             message: "Đăng kí thất bại",
@@ -135,6 +187,10 @@ const FormRegister = (props) => {
                 </Button>
 
             </Form.Item>
+            <Modal title="Vertify" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                <p>Chúng tôi vừa gửi cho bạn dòng code có 6 chữ số! Hãy nhập đúng để đăng ký</p>
+                <Input placeholder="Vertify" onChange={(e)=> setVertifyText(e.target.value)}/>
+            </Modal>
         </Form>
     )
 }

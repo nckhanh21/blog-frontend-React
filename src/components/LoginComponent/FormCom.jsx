@@ -6,6 +6,7 @@ const FormCom = (props) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    
     const onFinish = (values) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -119,9 +120,6 @@ const FormCom = (props) => {
                 <Button type="primary" htmlType="submit">
                     Sign in
                 </Button>
-                <div style={{display: 'flex'}}>
-                    Not a member?  <a href="/register">{"  Signup"}</a>
-                </div>
             </Form.Item>
         </Form>
     )

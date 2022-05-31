@@ -20,3 +20,15 @@ export function createAccount(data) {
     return axios.get("http://localhost:8086/api/auth/getAll");
   }
   
+  export function vertifyAccount(data) {
+    var url = "http://localhost:8086/api/auth/vertify"
+    var key = JSON.stringify( {
+      "key": data
+    })
+    var config = {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }
+    return axios.post(url, key, config)
+  }
