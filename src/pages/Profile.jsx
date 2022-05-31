@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import { Layout, Menu, Breadcrumb,Image,Avatar } from 'antd'; 
-import ContentCom from '../components/Homepage/ContentCom'
-import HeaderCom from '../components/HeaderCom'
 import Navbar from '../components/Navbar'
 import ContentProfile from '../components/ProfilePage/ContentProfile';
 import HeaderProfile from '../components/ProfilePage/HeaderProfile';

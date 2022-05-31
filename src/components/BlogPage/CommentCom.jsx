@@ -45,12 +45,9 @@ const CommentCom = (props) => {
                 })
             })
     }
-
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
-
     return (
         <>
             <List
@@ -59,8 +56,8 @@ const CommentCom = (props) => {
                 renderItem={item => (
                     <List.Item>
                         <List.Item.Meta
-                            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                            title={<a href="https://ant.design">{item.username}</a>}
+                            avatar={<Avatar src={(props.listAva) != undefined ? (props.listAva.find(x => x.username==item.username)).avatar : "https://joeschmoe.io/api/v1/random"}  />}
+                            title={item.username}
                             description={item.content}
                         />
                     </List.Item>
@@ -68,7 +65,7 @@ const CommentCom = (props) => {
             />
             <div style={{ margin: '30px', }}>
                 <div style={{ padding: '10px' }}>
-                    <Avatar src="https://joeschmoe.io/api/v1/random" /> Bình luận với tư cách {localStorage.getItem('username')}
+                    <Avatar src={(props.listAva.find(x => x.username==localStorage.getItem('username'))) != undefined ? (props.listAva.find(x => x.username==localStorage.getItem('username'))).avatar : "https://joeschmoe.io/api/v1/random"}s /> Bình luận với tư cách {localStorage.getItem('username')}
                 </div>
                 <Form
                     name="basic"

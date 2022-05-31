@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useLayoutEffect } from 'react';
 
 import { Layout, Menu, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Alert, Space } from 'antd';
 import Marquee from 'react-fast-marquee';
@@ -13,6 +13,7 @@ import { Link, useLocation } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
 import { likeByUser } from '../../apis/likeApi';
+import { getAllAvatar } from './../../apis/authApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -32,6 +33,8 @@ const ContentBlogType = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [posts, setPosts] = useState([])
     const [category, setCategory] = useState([])
+    const [listAva, setListAva] = useState([])
+
 
     useEffect(() => {
         getPostByCategory(idCategory)
@@ -42,6 +45,12 @@ const ContentBlogType = (props) => {
     useEffect(() => {
         getAllCategory()
             .then(res => setCategory(res.data))
+            .catch(err => console.log(err))
+    }, [])
+
+    useLayoutEffect(() => {
+        getAllAvatar()
+            .then(res => setListAva(res.data))
             .catch(err => console.log(err))
     }, [])
 
@@ -56,6 +65,15 @@ const ContentBlogType = (props) => {
         });
     };
 
+    const handleLike = (id) => {
+        likeByUser(id)
+            .then(() => {
+                getPostByCategory(idCategory)
+                    .then(res => setPosts(res.data.reverse()))
+                    .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
+    }
     const showModal = () => {
         props.isLogin == true ? setIsModalVisible(true) : openNotification()
     };
@@ -100,7 +118,9 @@ const ContentBlogType = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />,
+                                    <div style={{ cursor: "pointer" }} onClick={() => handleLike(item.id)}>
+                                        <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />
+                                    </div>,
                                     <IconText icon={MessageOutlined} text={item.numComment} key="list-vertical-message" />,
                                 ]}
                                 extra={
@@ -113,7 +133,7 @@ const ContentBlogType = (props) => {
                                 }
                             >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={"https://joeschmoe.io/api/v1/random"} />}
+                                    avatar={  (listAva.find(x => x.username==item.username)) != undefined ? <Avatar src={(listAva.find(x => x.username==item.username)).avatar}/> : <Avatar src={"https://joeschmoe.io/api/v1/random"}/>}
                                     title={(props.isLogin == true) ?
                                         <Link to={"/blog/" + item.id}>{item.title}</Link> :
                                         <Link to={"/login"}>{item.title}</Link>}

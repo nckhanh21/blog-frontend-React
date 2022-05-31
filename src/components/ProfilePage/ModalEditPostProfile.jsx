@@ -33,7 +33,7 @@ const ModalEditPostProfile = (props) => {
             })
             .catch(() => {
                 notification["error"]({
-                    message: "Lỗi khi đăng bài viết",
+                    message: "Lỗi khi sửa bài viết",
                     placement: "topRight",
                 });
             })
@@ -45,7 +45,7 @@ const ModalEditPostProfile = (props) => {
                 props.setPosts(res.data.reverse())
                 notification["success"]({
                     message:
-                        "Thêm bài viết thành công!",
+                        "Sửa bài viết thành công!",
                     placement: "topRight",
                 });
             })

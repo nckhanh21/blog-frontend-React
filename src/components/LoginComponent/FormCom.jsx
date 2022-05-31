@@ -3,10 +3,6 @@ import { Form, Input, Button, Checkbox, notification } from 'antd';
 
 
 const FormCom = (props) => {
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    
     const onFinish = (values) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -47,15 +43,11 @@ const FormCom = (props) => {
                 });
             });
 
-
-        console.log('Success:', values);
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
-
-    console.log(username, password);
     return (
         <Form
             name="basic"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Layout, Menu, Breadcrumb, Select, Image, Modal, Button, notification, List, Avatar, Space } from 'antd';
+import { Layout, Menu, Breadcrumb, Select, Input, Modal, Button, notification, List, Avatar, Space } from 'antd';
 import {
     PlusOutlined,
     MailOutlined,
@@ -20,6 +20,7 @@ import Text from 'antd/lib/typography/Text';
 import ModalProfile from './ModalProfile';
 import { getAllCategory } from './../../apis/categoryApi';
 import ModalEditPostProfile from './ModalEditPostProfile';
+import { editAvatar, getAvatar } from '../../apis/authApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -35,10 +36,13 @@ const IconText = ({ icon, text }) => (
 
 const ContentProfile = (props) => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
+    const [isModalVisibleEditAvatar, setIsModalVisibleEditAvatar] = useState(false);
     const [posts, setPosts] = useState([])
     const [isRender, setIsRender] = useState(false);
     const [category, setCategory] = useState([])
+    const [avatar, setAvatar] = useState("");
+    const [avatarEdit, setAvatarEdit] = useState("");
+
     useEffect(() => {
         getAllPostByUser()
             .then(res => setPosts(res.data.reverse()))
@@ -50,7 +54,11 @@ const ContentProfile = (props) => {
             .then(res => setCategory(res.data))
             .catch(err => console.log(err))
     }, [])
-
+    useEffect(() => {
+        getAvatar()
+            .then(res => setAvatar(res.data))
+            .catch(err => console.log(err))
+    }, [])
 
     const openNotification = () => {
         notification.open({
@@ -72,10 +80,6 @@ const ContentProfile = (props) => {
             }))
             .catch()
     }
-    const handleEditPost = (id) => {
-
-    }
-
     const showModal = () => {
         props.isLogin == true ? setIsModalVisible(true) : openNotification()
     };
@@ -87,17 +91,27 @@ const ContentProfile = (props) => {
     const handleCancel = () => {
         setIsModalVisible(false);
     };
-
-    const showModalEdit = () => {
-        props.isLogin == true ? setIsModalVisibleEdit(true) : openNotification()
+    const showModalEditAvatar = () => {
+        props.isLogin == true ? setIsModalVisibleEditAvatar(true) : openNotification()
+    };
+    const handleOkEditAvatar = () => {
+        editAvatar(avatarEdit)
+            .then(() => getAvatar()
+                .then(res => setAvatar(res.data))
+                .catch(err => console.log(err)))
+            .then(() => notification["success"]({
+                message: "Sửa avatar thành công",
+                placement: "topRight",
+            }))
+            .catch(() => notification["error"]({
+                message: "Sửa avatar thất bại",
+                placement: "topRight",
+            }))
+        setIsModalVisibleEditAvatar(false);
     };
 
-    const handleOkEdit = () => {
-        setIsModalVisibleEdit(false);
-    };
-
-    const handleCancelEdit = () => {
-        setIsModalVisibleEdit(false);
+    const handleCancelEditAvatar = () => {
+        setIsModalVisibleEditAvatar(false);
     };
     return (
         <div>
@@ -111,20 +125,23 @@ const ContentProfile = (props) => {
                         Thêm bài viết
                     </Button>
                     <ModalProfile setPosts={(data) => setPosts(data)} category={category} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
-                            
-                        
                 </div>
                 <div className="site-layout-background" style={{ backgroundColor: "rgb(249, 255, 240)", padding: 24, minHeight: 360 }}>
+                    <div style={{ textAlign: "right", }}>
+                        <Button onClick={showModalEditAvatar} >Đổi Avatar</Button>
+                        <Modal title="Edit Avatar" visible={isModalVisibleEditAvatar} onOk={handleOkEditAvatar} onCancel={handleCancelEditAvatar}>
+                            <p>Nhập link 1 cái ảnh thật đẹp vào đây :)))</p>
+                            <Input placeholder="Image" onChange={(e) => setAvatarEdit(e.target.value)} />
+                        </Modal>
+                    </div>
                     <div style={{ display: 'flex', justifyContent: "space-around", textAlign: 'center' }}>
-                        <Avatar style={{ background: "white" }} size={300} src="https://joeschmoe.io/api/v1/random" />
+                        <Avatar style={{ background: "white" }} size={300} src={avatar} />
                     </div>
                     <div style={{ display: 'flex', justifyContent: "space-around", textAlign: 'center' }}>
                         <Title>{localStorage.getItem('username')}</Title>
                     </div>
-
                 </div>
                 <Text strong type="success"> Những bài viết đã đăng</Text>
-
 
                 <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
 
@@ -145,10 +162,10 @@ const ContentProfile = (props) => {
                             <List.Item
                                 key={item.title}
                                 actions={[
-                                    <IconText icon={LikeOutlined} text={item.numLike}key="list-vertical-like-o" />,
+                                    <IconText icon={LikeOutlined} text={item.numLike} key="list-vertical-like-o" />,
                                     <IconText icon={MessageOutlined} text={item.numComment} key="list-vertical-message" />,
                                     <Button onClick={() => handleDeletePost(item.id)}>Xóa</Button>,
-                                    
+
                                 ]}
                                 extra={
                                     <img
@@ -160,7 +177,7 @@ const ContentProfile = (props) => {
                                 }
                             >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={"https://joeschmoe.io/api/v1/random"} />}
+                                    avatar={<Avatar src={avatar} />}
                                     title={(props.isLogin == true) ?
                                         <Link to={"/blog/" + item.id}>{item.title}</Link> :
                                         <Link to={"/login"}>{item.title}</Link>

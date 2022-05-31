@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 import { Layout, Menu, Breadcrumb, Image, Modal, Button, notification, Dropdown, Avatar, Space, Typography } from 'antd';
 import parse from 'html-react-parser';
@@ -20,6 +20,7 @@ import CommentCom from './CommentCom';
 import { likeByUser } from '../../apis/likeApi';
 import { getAllPost, getPost } from '../../apis/postApi';
 import ModalEditPostProfile from './ModalEditPostProfile';
+import { getAllAvatar } from './../../apis/authApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -38,7 +39,7 @@ const ContentBlog = (props) => {
     const [comments, setComments] = useState([])
     const [numCmt, setNumCmt] = useState(0)
     const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
-
+    const [listAva, setListAva] = useState([])
 
     useEffect(() => {
         getAllCommentsByPost(props.id)
@@ -47,6 +48,12 @@ const ContentBlog = (props) => {
                 console.log(res.data);
                 setNumCmt(res.data.length);
             })
+    }, [])
+
+    useLayoutEffect(() => {
+        getAllAvatar()
+            .then(res => setListAva(res.data))
+            .catch(err => console.log(err))
     }, [])
 
 
@@ -96,7 +103,7 @@ const ContentBlog = (props) => {
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', }}>
-                            <Avatar size={60} src={<Image src="https://joeschmoe.io/api/v1/random" style={{ width: 60 }} />} />
+                            <Avatar size={60} src={<Image src={(listAva.find(x => x.username==props.blog.username)) != undefined ? (listAva.find(x => x.username==props.blog.username)).avatar : "https://joeschmoe.io/api/v1/random"} style={{ width: 60 }} />} />
                             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: "left", padding: "10px" }}>
                                 <div>
                                     Tác giả: <Text strong>{props.blog.username}</Text>
@@ -108,7 +115,7 @@ const ContentBlog = (props) => {
                                             <Text code>{Math.floor(props.blog.createdOn / 60)} giờ trước</Text> : <Text code>{props.blog.createdOn} phút trước</Text>
                                     }
                                    &nbsp;&nbsp;
-                                   Thể loại: {props.category[props.blog.category_id] != undefined? props.category[props.blog.category_id-1].name : "load" }
+                                   Thể loại: {props.category[props.blog.category_id-1] != undefined? props.category[props.blog.category_id-1].name : "load" }
                                 </div>
                             </div>
                         </div>
@@ -141,7 +148,7 @@ const ContentBlog = (props) => {
                     <div style={{ padding: "30px" }}>
                         <Title level={4}>Comment</Title>
                         <div style={{ padding: "10px" }}>
-                            <CommentCom id={props.id} numCmt={numCmt} setNumCmt={(data) => setNumCmt(data)} setComments={(data) => setComments(data)} comments={comments} />
+                            <CommentCom listAva={listAva} id={props.id} numCmt={numCmt} setNumCmt={(data) => setNumCmt(data)} setComments={(data) => setComments(data)} comments={comments} />
                         </div>
                     </div>
                 </div>

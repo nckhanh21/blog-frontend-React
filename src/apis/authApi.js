@@ -32,3 +32,31 @@ export function createAccount(data) {
     }
     return axios.post(url, key, config)
   }
+
+  export function getAvatar() {
+    var url = "http://localhost:8086/api/auth/getAvatar" 
+    var config = {
+      headers: {
+        "Authorization": 'Bearer ' + localStorage.getItem("accessToken")
+      }
+    }
+    return axios.get(url, config);
+  }
+  export function getAllAvatar() {
+    var url = "http://localhost:8086/api/auth/getAllAvatar" 
+    return axios.get(url);
+  }
+
+  export function editAvatar(data) {
+    var url = "http://localhost:8086/api/auth/change/avatar" 
+    var post = JSON.stringify({
+      "avatar": data
+    })
+    var config = {
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": 'Bearer ' + localStorage.getItem("accessToken")
+      }
+    }
+    return axios.put(url, post, config);
+  }

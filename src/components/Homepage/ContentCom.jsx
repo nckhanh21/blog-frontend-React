@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useLayoutEffect, useEffect } from 'react';
 
 import { Layout, Menu, Input, Breadcrumb, Image, Modal, Button, notification, List, Avatar, Space } from 'antd';
 
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import FooterCom from '../FooterCom';
 import { getAllCategory } from '../../apis/categoryApi';
 import { likeByUser } from '../../apis/likeApi';
+import { getAllAvatar } from './../../apis/authApi';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -30,6 +31,7 @@ const ContentCom = (props) => {
     const [posts, setPosts] = useState([])
     const [isRender, setIsRender] = useState(false);
     const [category, setCategory] = useState([])
+    const [listAva, setListAva] = useState([])
 
     useEffect(() => {
         getAllPost()
@@ -42,6 +44,13 @@ const ContentCom = (props) => {
             .then(res => setCategory(res.data))
             .catch(err => console.log(err))
     }, [])
+
+    useLayoutEffect(() => {
+        getAllAvatar()
+            .then(res => setListAva(res.data))
+            .catch(err => console.log(err))
+    }, [])
+
 
     const handleLike = (id) => {
         likeByUser(id)
@@ -138,7 +147,7 @@ const ContentCom = (props) => {
                                 }
                             >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={"https://joeschmoe.io/api/v1/random"} />}
+                                    avatar={  (listAva.find(x => x.username==item.username)) != undefined ? <Avatar src={(listAva.find(x => x.username==item.username)).avatar}/> : <Avatar src={"https://joeschmoe.io/api/v1/random"}/>}
                                     title={(props.isLogin == true) ?
                                         <Link to={"/blog/" + item.id}>{item.title}</Link> :
                                         <Link to={"/login"}>{item.title}</Link>}

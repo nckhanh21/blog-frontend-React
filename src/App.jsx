@@ -14,6 +14,7 @@ import RegisterPage from './pages/RegisterPage';
 import Blog from './pages/Blog';
 import BlogType from './pages/BlogType';
 import Navbar from './components/Navbar';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path ="/register" element = {<RegisterPage/>} />
         <Route path ="/blog/:blogId" element = {<Blog/>}/>
         <Route path ="/type/:blogtype" element = {<BlogType/>} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
   )
