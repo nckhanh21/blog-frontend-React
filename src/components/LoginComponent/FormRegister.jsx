@@ -188,7 +188,7 @@ const FormRegister = (props) => {
 
             </Form.Item>
             <Modal title="Vertify" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                <p>Chúng tôi vừa gửi cho bạn dòng code có 6 chữ số! Hãy nhập đúng để đăng ký</p>
+                <p>Chúng tôi vừa gửi cho bạn dòng code có 6 chữ số! Hãy nhập đúng để đăng ký (Quá trình gửi mail có thể mất vài giây)</p>
                 <Input placeholder="Vertify" onChange={(e)=> setVertifyText(e.target.value)}/>
             </Modal>
         </Form>
