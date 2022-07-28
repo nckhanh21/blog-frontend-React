@@ -1,3 +1,33 @@
+- Đăng ký tài khoản
+<p align="center">
+  <img src="./ProjectTestCaseImage/dangky1.jpg" width="1200" title="hover text">
+  <img src="./ProjectTestCaseImage/dangky2.jpg" width="1200" title="hover text">
+  <img src="./ProjectTestCaseImage/dangky3.jpg" width="1200" title="hover text">
+</p>
+- Màn hình chính sau khi đăng nhập
+<p align="center">
+  <img src="./ProjectTestCaseImage/manhinhchinh.jpg" width="1200" title="hover text">
+</p>
+- Đổi avatar
+<p align="center">
+  <img src="./ProjectTestCaseImage/changeAva1.jpg" width="1200" title="hover text">
+  <img src="./ProjectTestCaseImage/changeAva2.jpg" width="1200" title="hover text">
+</p>
+- Đăng bài viết
+<p align="center">
+  <img src="./ProjectTestCaseImage/postbai1.jpg" width="1200" title="hover text">
+  <img src="./ProjectTestCaseImage/postbai2.jpg" width="1200" title="hover text">
+</p>
+- Đăng comment
+<p align="center">
+  <img src="./ProjectTestCaseImage/postcomment.jpg" width="1200" title="hover text">
+</p>
+- Tìm kiếm bài viết
+<p align="center">
+  <img src="./ProjectTestCaseImage/searchPost.jpg" width="1200" title="hover text">
+</p>
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
